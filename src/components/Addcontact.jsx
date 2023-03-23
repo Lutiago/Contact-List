@@ -1,7 +1,12 @@
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 export function AddContact() {
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
   const handleSubmitForm = (data) => {
     console.log(data);
@@ -11,23 +16,27 @@ export function AddContact() {
     <div>
       <form onSubmit={handleSubmit(handleSubmitForm)}>
         <div className="mb-3">
-          <label for="full_name" className="form-label">
+          <label htmlFor="full_name" className="form-label">
             Full Name
           </label>
           <input
-            {...register("full_name")}
+            {...register("full_name", { required: true })}
             type="text"
             className="form-control"
             id="full_name"
           />
+          {errors.full_name && <div className="error">Required</div>}
         </div>
 
         <div className="mb-3">
-          <label for="email" className="form-label">
+          <label htmlFor="email" className="form-label">
             Email
           </label>
           <input
-            {...register("email")}
+            {...register("email", {
+              required: true,
+              pattern: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+            })}
             type="email"
             className="form-control"
             id="email"
@@ -35,7 +44,7 @@ export function AddContact() {
         </div>
 
         <div className="mb-3">
-          <label for="phone" className="form-label">
+          <label htmlFor="phone" className="form-label">
             Phone
           </label>
           <input
@@ -47,7 +56,7 @@ export function AddContact() {
         </div>
 
         <div className="mb-3">
-          <label for="address" className="form-label">
+          <label htmlFor="address" className="form-label">
             Mail Address
           </label>
           <input
